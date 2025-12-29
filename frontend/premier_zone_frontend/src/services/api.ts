@@ -1,4 +1,4 @@
-const API_BASE_URL = 'http://localhost:8080/api/v1';
+const API_BASE_URL = import.meta.env.VITE_API_URL;
 
 export interface Player {
   name: string;
@@ -19,17 +19,11 @@ export interface Player {
 }
 
 export const fetchPlayers = async (): Promise<Player[]> => {
-  try {
-    const response = await fetch(`${API_BASE_URL}/player`);
+  const response = await fetch(`${API_BASE_URL}/player`);
 
-    if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`);
-    }
-
-    const data = await response.json();
-    return data;
-  } catch (error) {
-    console.error('Error fetching players:', error);
-    throw error;
+  if (!response.ok) {
+    throw new Error(`HTTP error! status: ${response.status}`);
   }
+
+  return response.json();
 };
